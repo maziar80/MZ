@@ -1,0 +1,121 @@
+using System;
+
+class AdventureGame
+{
+    // Player variables
+    static int health = 50;
+    static int energy = 30;
+    static bool hasWeapon = false;
+    static bool isEnemyVisible = true;
+
+    // Enemy variables
+    static string enemyType = "Goblin"; 
+    static int enemyHealth = 70;
+
+    static void Main(string[] args)
+    {
+        // Example of gameplay
+        Console.WriteLine("Welcome to the Adventure Game!");
+        ShowStatus();
+
+        // Player actions
+        AttackEnemy();
+        EscapeEnemy();
+        isEnemyVisible = false; 
+        SearchForResources();
+
+        // Show final status
+        ShowStatus();
+    }
+
+    static void ShowStatus()
+    {
+        Console.WriteLine("\nPlayer Status:");
+        Console.WriteLine($"Health: {health}");
+        Console.WriteLine($"Energy: {energy}");
+        Console.WriteLine($"Has Weapon: {hasWeapon}");
+        Console.WriteLine($"Enemy Visible: {isEnemyVisible}");
+        Console.WriteLine($"Enemy Type: {enemyType}");
+        Console.WriteLine($"Enemy Health: {enemyHealth}\n");
+    }
+
+    static void AttackEnemy()
+    {
+        if (hasWeapon && energy > 20)
+        {
+            int damage = 0;
+            switch (enemyType)
+            {
+                case "Goblin":
+                    damage = 30;
+                    break;
+                case "Orc":
+                    damage = 20;
+                    break;
+                case "Dragon":
+                    damage = 10;
+                    break;
+                default:
+                    Console.WriteLine("Unknown enemy type!");
+                    return;
+            }
+
+            enemyHealth -= damage;
+            Console.WriteLine($"You attacked the {enemyType} and dealt {damage} damage!");
+
+            if (enemyHealth <= 0)
+            {
+                Console.WriteLine("Enemy defeated!");
+            }
+        }
+        else if (!hasWeapon)
+        {
+            Console.WriteLine("You cannot attack without a weapon!");
+        }
+        else
+        {
+            Console.WriteLine("Not enough energy to attack!");
+        }
+    }
+
+    static void EscapeEnemy()
+    {
+        if (isEnemyVisible && energy < 20)
+        {
+            if (enemyType == "Dragon")
+            {
+                Console.WriteLine("You cannot escape from the Dragon!");
+            }
+            else
+            {
+                Console.WriteLine("You escaped successfully!");
+                isEnemyVisible = false;
+            }
+        }
+        else if (!isEnemyVisible)
+        {
+            Console.WriteLine("There's no enemy to escape from.");
+        }
+        else
+        {
+            Console.WriteLine("You have enough energy to fight. No need to escape.");
+        }
+    }
+
+    static void SearchForResources()
+    {
+        if (!isEnemyVisible && energy < 10)
+        {
+            Console.WriteLine("You found an energy potion!");
+            energy += 20;
+        }
+        else if (isEnemyVisible)
+        {
+            Console.WriteLine("You can't search for resources while an enemy is nearby!");
+        }
+        else
+        {
+            Console.WriteLine("Your energy is sufficient. No need to search for resources.");
+        }
+    }
+}
